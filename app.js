@@ -3,6 +3,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
+const _ = require("lodash");
 
 const homeStartingContent = "This is the official blog site for Nii Kotey Djanie, where I get to share the journey of my life with you.";
 const aboutContent = "Hac habitasse platea dictumst vestibulum rhoncus est pellentesque. Dictumst vestibulum rhoncus est pellentesque elit ullamcorper. Non diam phasellus vestibulum lorem sed. Platea dictumst quisque sagittis purus sit. Egestas sed sed risus pretium quam vulputate dignissim suspendisse. Mauris in aliquam sem fringilla. Semper risus in hendrerit gravida rutrum quisque non tellus orci. Amet massa vitae tortor condimentum lacinia quis vel eros. Enim ut tellus elementum sagittis vitae. Mauris ultrices eros in cursus turpis massa tincidunt dui.";
@@ -22,7 +23,7 @@ app.get("/", function(req, res){
   res.render("home", {
     startingContent:homeStartingContent,
     posts: posts});
-  console.log(posts);
+ 
 });
 app.get("/about", function(req, res){res.render("about", {aboutContent:aboutContent});})
 app.get("/contact", function(req, res){res.render("contact", {contactContent:contactContent});})
@@ -37,9 +38,23 @@ app.post("/compose", function(req, res){
 })
 
 
+app.get("/posts/:postName", function(req, res){
+ const requestedTitle = _.lowerCase(req.params.postName);
 
 
 
+
+ posts.forEach(post => { 
+     const storedTitle = _.lowerCase(post.title);
+   
+ 
+ if (storedTitle === requestedTitle)
+ {
+    console.log("match found");
+  }
+  
+});
+});
 
 
 
