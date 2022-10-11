@@ -50,7 +50,10 @@ app.get("/posts/:postName", function(req, res){
  
  if (storedTitle === requestedTitle)
  {
-    console.log("match found");
+  res.render("post", {
+    title: post.title,
+    content: post.content
+  })
   }
   
 });
