@@ -2,6 +2,7 @@
 
 const express = require("express");
 const bodyParser = require("body-parser");
+const moongoose = require("mongoose");
 const ejs = require("ejs");
 const _ = require("lodash");
 
@@ -16,6 +17,32 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 
+const { MongoClient } = require("mongodb");
+// Replace the uri string with your connection string.
+const uri = "mongodb://0.0.0.0:27017/";
+const client = new MongoClient(uri);
+
+
+async function run() {
+  try {
+    const database = client.db('blogDB');
+    const posts = database.collection('posts');
+      // create a document to insert
+      const doc = {
+        title: "Record of a Shriveled Datum",
+        content: "No bytes, no problem. Just insert a document, in MongoDB",
+      }
+      const result = await posts.insertOne(doc);
+      console.log(`A document was inserted with the _id: ${result.insertedId}`);
+   
+   
+  } finally {
+    // Ensures that the client will close when you finish/error
+    await client.close();
+    console.log("Connection successful");
+  }
+}
+run().catch(console.dir);
 
 let posts = [];
 
